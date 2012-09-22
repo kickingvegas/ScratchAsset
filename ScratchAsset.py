@@ -24,6 +24,8 @@ import shutil
 
 usageString = '%s -t -c <color> -b <bgcolor> -x -l' % os.path.basename(sys.argv[0])
 helpString = """
+A utility to generate scratch image assets for an iOS project and its corresponding iTunes Connect app submission. 
+
 -t <title>, --title=<title>                title label to render in scratch image
 -c <color>, --color=<color>                color of title label (CSS or X11 color name)
 -b <bgcolor>, --backgroundcolor=<bgcolor>  background color (CSS or X11 color name)
