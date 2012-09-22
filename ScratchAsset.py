@@ -34,6 +34,7 @@ A utility to generate scratch image assets for an iOS project and its correspond
 -h, --help                                 help
 -v, --version                              version
 
+Copyright 2012 Yummy Melon Software LLC
 """
 
 class Asset:
