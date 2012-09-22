@@ -1,5 +1,19 @@
 #!/usr/bin/env python
-# Copyright 2012 Yummy Melon Software
+#
+# Copyright 2012 Yummy Melon Software LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
 # Author: Charles Y. Choi
 
 import os
@@ -7,7 +21,6 @@ import sys
 import getopt
 import subprocess
 import shutil
-
 
 usageString = '%s ...' % os.path.basename(sys.argv[0])
 helpString = """
@@ -86,7 +99,6 @@ class Application:
 
         
     def run(self, optlist, args):
-        sys.stdout.write('hello, world...\n')
 
         for o, i in optlist:
             if o in ('-h', '--help'):
@@ -109,6 +121,11 @@ class Application:
                 
         if len(args) < 1:
             pass
+
+
+        if not os.path.exists('scratch'):
+            os.mkdir('scratch')
+        
 
 
         for key, item in self.assetSpecifications.items():
@@ -155,10 +172,10 @@ class Application:
             print ' '.join(cmdList2)
             subprocess.call(cmdList2)
             
-            if os.path.exists('generated/%s' % item.filename):
-                os.unlink('generated/%s' % item.filename)
+            if os.path.exists('scratch/%s' % item.filename):
+                os.unlink('scratch/%s' % item.filename)
 
-            shutil.move(item.filename, 'generated')
+            shutil.move(item.filename, 'scratch')
             
             os.unlink('temp.png')
 
@@ -167,11 +184,13 @@ class Application:
 if __name__ == '__main__':
 
     try:
-        optlist, args = getopt.getopt(sys.argv[1:], 'hvt:c:b:',
+        optlist, args = getopt.getopt(sys.argv[1:], 'hvt:c:b:xl',
                                       ('help'
                                        , 'title='
                                        , 'color='
                                        , 'backgroundcolor='
+                                       , 'execute'
+                                       , 'list'
                                        , 'version'))
                                        
     except getopt.error, msg:
