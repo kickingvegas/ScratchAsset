@@ -22,10 +22,15 @@ import getopt
 import subprocess
 import shutil
 
-usageString = '%s ...' % os.path.basename(sys.argv[0])
+usageString = '%s -t -c <color> -b <bgcolor> -x -l' % os.path.basename(sys.argv[0])
 helpString = """
--h, --help                help
--v, --version             version
+-t <title>, --title=<title>                title label to render in scratch image
+-c <color>, --color=<color>                color of title label
+-b <bgcolor>, --backgroundcolor=<bgcolor>  background color
+-x, --execute                              execute
+-l, --list                                 list images generated
+-h, --help                                 help
+-v, --version                              version
 
 """
 
@@ -52,20 +57,17 @@ class Asset:
     def stringSize(self):
         result = '%dx%d' % self.size()
         return result
-    
-    
 
 class Application:
     def __init__(self):
         self.version = 1.0
         self.options = {}
-        self.options['title'] = 'Scratch'
+        self.options['title'] = 'ScratchAsset'
         self.options['color'] = 'black'
         self.options['backgroundcolor'] = '#7CFC00'
-
+        self.options['execute'] = False
 
         self.assetSpecifications = {}
-
         self.assetSpecifications['icon114'] = Asset('icon', 114, 114)
         self.assetSpecifications['icon57'] = Asset('icon', 57, 57)
         self.assetSpecifications['icon144'] = Asset('icon', 144, 144)
@@ -97,6 +99,21 @@ class Application:
         self.assetSpecifications['itc_iPod5Landscape'] = Asset('itc', 1136, 640)
 
 
+    def list(self):
+
+        tempDict = {}
+        
+        for key, item in self.assetSpecifications.items():
+            tempDict[item.filename] = item
+
+
+        keyList = tempDict.keys()
+
+        keyList.sort()
+        for key in keyList:
+            item = tempDict[key]
+            sys.stdout.write('%s %s\n' % (key, item.stringSize()))
+
         
     def run(self, optlist, args):
 
@@ -118,15 +135,28 @@ class Application:
                 
             elif o in ('-b', '--background'):
                 self.options['backgroundcolor'] = i
+
+
+            elif o in ('-x', '--execute'):
+                self.options['execute'] = True
+
+            elif o in ('-l', '--l'):
+                self.list()
+                sys.exit(0)
+                
+                
                 
         if len(args) < 1:
             pass
 
 
-        if not os.path.exists('scratch'):
-            os.mkdir('scratch')
-        
+        self.createAssets()
 
+    def createAssets(self):
+
+        if self.options['execute']:
+            if not os.path.exists('scratch'):
+                os.mkdir('scratch')
 
         for key, item in self.assetSpecifications.items():
             cmdList = []
@@ -137,8 +167,12 @@ class Application:
             cmdList.append('xc:%s' % self.options['backgroundcolor'])
             cmdList.append('temp.png')
 
-            print ' '.join(cmdList)
-            subprocess.call(cmdList)
+            #print ' '.join(cmdList)
+            if self.options['execute']:
+                sys.stdout.write('Generating %s\n' % item.filename)
+                subprocess.call(cmdList)
+            else:
+                sys.stdout.write('%s\n' % ' '.join(cmdList))
 
             cmdList2 = []
 
@@ -169,16 +203,19 @@ class Application:
             cmdList2.append('temp.png')
             cmdList2.append(item.filename)
 
-            print ' '.join(cmdList2)
-            subprocess.call(cmdList2)
+            #print ' '.join(cmdList2)
+            if self.options['execute']:
+                subprocess.call(cmdList2)
             
-            if os.path.exists('scratch/%s' % item.filename):
-                os.unlink('scratch/%s' % item.filename)
+                if os.path.exists('scratch/%s' % item.filename):
+                    os.unlink('scratch/%s' % item.filename)
 
-            shutil.move(item.filename, 'scratch')
+                shutil.move(item.filename, 'scratch')
             
-            os.unlink('temp.png')
+                os.unlink('temp.png')
 
+            else:
+                sys.stdout.write('%s\n' % ' '.join(cmdList2))
 
          
 if __name__ == '__main__':
@@ -194,17 +231,10 @@ if __name__ == '__main__':
                                        , 'version'))
                                        
     except getopt.error, msg:
-        sys.stderr.write(msg + '\n')
-        sys.stderr.write(usageString)
+        sys.stderr.write('ERROR: %s\n' % msg[0])
+        sys.stderr.write('%s\n' % usageString)
         sys.exit(1)
 
-    
     app = Application()
     app.run(optlist, args)
 
-
-    for key in app.assetSpecifications:
-        asset = app.assetSpecifications[key]
-        print asset.filename
-        
-    
