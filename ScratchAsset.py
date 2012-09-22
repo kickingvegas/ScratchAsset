@@ -16,11 +16,74 @@ helpString = """
 
 """
 
+class Asset:
+    def __init__(self, atype=None, width=None, height=None, filename=None, retina=True):
+        self.atype = atype
+        self.width = width
+        self.height = height
+        self.retina = retina
+
+        if filename is None:
+
+            if self.atype == 'itc':
+                filename = '%s_screen_%dx%d.png' % (self.atype, self.width, self.height)
+            else:
+                filename = 'app_%s_%dx%d.png' % (self.atype, self.width, self.height)
+        
+        self.filename = filename
+            
+
+    def size(self):
+        return (self.width, self.height)
+
+    def stringSize(self):
+        result = '%dx%d' % self.size()
+        return result
+    
+    
+
 class Application:
     def __init__(self):
         self.version = 1.0
         self.options = {}
+        self.options['title'] = 'Scratch'
+        self.options['color'] = 'black'
+        self.options['backgroundcolor'] = '#7CFC00'
+
+
+        self.assetSpecifications = {}
+
+        self.assetSpecifications['icon114'] = Asset('icon', 114, 114)
+        self.assetSpecifications['icon57'] = Asset('icon', 57, 57)
+        self.assetSpecifications['icon144'] = Asset('icon', 144, 144)
+        self.assetSpecifications['icon72'] = Asset('icon', 72, 72)
         
+        self.assetSpecifications['iPhone5LaunchPortrait'] = Asset('launch', 640, 1136, 'Default-568h@2x.png')
+        self.assetSpecifications['iPhone4LaunchPortrait'] = Asset('launch', 640, 960, 'Default@2x.png')
+        self.assetSpecifications['iPhoneLaunchPortrait'] = Asset('launch', 320, 480, 'Default.png', retina=False)
+        self.assetSpecifications['iPad3LaunchPortrait'] = Asset('launch', 1536, 2008, 'Default-Portrait@2x~iPad.png')
+        self.assetSpecifications['iPad3LaunchLandscape'] = Asset('launch', 2048, 1496, 'Default-Landscape@2x~iPad.png')
+        self.assetSpecifications['iPadLaunchPortrait'] = Asset('launch', 768, 1004, 'Default-Portrait~iPad.png', retina=False)
+        self.assetSpecifications['iPadLaunchLandscape'] = Asset('launch', 1024, 748, 'Default-Landscape~iPad.png', retina=False)
+                
+        self.assetSpecifications['icon58'] = Asset('small_icon', 58, 58)
+        self.assetSpecifications['icon29'] = Asset('small_icon', 29, 29)
+        self.assetSpecifications['icon100'] = Asset('small_icon', 100, 100)
+
+        self.assetSpecifications['icon1024'] = Asset('icon', 1024, 1024)
+        self.assetSpecifications['icon512'] = Asset('icon', 512, 512)
+        
+        self.assetSpecifications['itc_iPhone4'] = Asset('itc', 640, 960)
+        self.assetSpecifications['itc_iPadLandscape'] = Asset('itc', 2048, 1536)
+        self.assetSpecifications['itc_iPadPortrait'] = Asset('itc', 1536, 2048)
+
+        self.assetSpecifications['itc_iPhone5Portrait'] = Asset('itc', 640, 1096)
+        self.assetSpecifications['itc_iPod5Portrait'] = Asset('itc', 640, 1136)
+        
+        self.assetSpecifications['itc_iPhone5Landscape'] = Asset('itc', 1136, 600)
+        self.assetSpecifications['itc_iPod5Landscape'] = Asset('itc', 1136, 640)
+
+
         
     def run(self, optlist, args):
         sys.stdout.write('hello, world...\n')
@@ -34,21 +97,83 @@ class Application:
             elif o in ('-v', '--version'):
                 sys.stdout.write('%s\n' % str(self.version))
                 sys.exit(0)
+
+            elif o in ('-t', '--title'):
+                self.options['title'] = i
+
+            elif o in ('-c', '--color'):
+                self.options['color'] = i
+                
+            elif o in ('-b', '--background'):
+                self.options['backgroundcolor'] = i
                 
         if len(args) < 1:
             pass
 
-        cmdList = ['ls', '-al']
-        subprocess.call(cmdList)
+
+        for key, item in self.assetSpecifications.items():
+            cmdList = []
+
+            cmdList.append('convert')
+            cmdList.append('-size')
+            cmdList.append(item.stringSize())
+            cmdList.append('xc:%s' % self.options['backgroundcolor'])
+            cmdList.append('temp.png')
+
+            print ' '.join(cmdList)
+            subprocess.call(cmdList)
+
+            cmdList2 = []
+
+            cmdList2.append('convert')
+
+            if item.width > 300:
+                pointSize = 20
+            else:
+                pointSize = 8
+                
+            cmdList2.append('-pointsize')
+            cmdList2.append('%d' % pointSize)
+
+            cmdList2.append('-fill')
+            cmdList2.append('%s' % self.options['color'])
+
+            if item.width > 144:
+                x = item.width / 2
+                y = item.height / 2
+            else:
+                x = 0
+                y = 10
+                
+            draw = 'text %d,%d "%s"' % (x, y, self.options['title'])
+            cmdList2.append('-draw')
+            cmdList2.append('%s' % draw)
+
+            cmdList2.append('temp.png')
+            cmdList2.append(item.filename)
+
+            print ' '.join(cmdList2)
+            subprocess.call(cmdList2)
+            
+            if os.path.exists('generated/%s' % item.filename):
+                os.unlink('generated/%s' % item.filename)
+
+            shutil.move(item.filename, 'generated')
+            
+            os.unlink('temp.png')
 
 
          
 if __name__ == '__main__':
 
     try:
-        optlist, args = getopt.getopt(sys.argv[1:], 'hv',
-                                      ('help',
-                                       'version'))
+        optlist, args = getopt.getopt(sys.argv[1:], 'hvt:c:b:',
+                                      ('help'
+                                       , 'title='
+                                       , 'color='
+                                       , 'backgroundcolor='
+                                       , 'version'))
+                                       
     except getopt.error, msg:
         sys.stderr.write(msg + '\n')
         sys.stderr.write(usageString)
@@ -58,4 +183,9 @@ if __name__ == '__main__':
     app = Application()
     app.run(optlist, args)
 
+
+    for key in app.assetSpecifications:
+        asset = app.assetSpecifications[key]
+        print asset.filename
+        
     
