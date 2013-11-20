@@ -112,7 +112,6 @@ class Application:
             elif o in ('-b', '--background'):
                 self.options['backgroundcolor'] = i
 
-
             elif o in ('-x', '--execute'):
                 self.options['execute'] = True
 
@@ -120,6 +119,7 @@ class Application:
                 self.options['osversion'] = i
 
             elif o in ('-l', '--l'):
+                self.populateSpecifications()
                 self.list()
                 sys.exit(0)
                 
