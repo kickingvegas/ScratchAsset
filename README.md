@@ -25,32 +25,65 @@ To install edit the `INSTALL` path to your preference in the `Makefile` and run 
 
 When the utility is executed, the following files are generated in the directory `scratch` that is placed in the current directory.
 
-<table>
-<tr><td>Default-568h@2x.png</td><td>640x1136</td></tr>
-<tr><td>Default-Landscape@2x~iPad.png</td><td>2048x1496</td></tr>
-<tr><td>Default-Landscape~iPad.png</td><td>1024x748</td></tr>
-<tr><td>Default-Portrait@2x~iPad.png</td><td>1536x2008</td></tr>
-<tr><td>Default-Portrait~iPad.png</td><td>768x1004</td></tr>
-<tr><td>Default.png</td><td>320x480</td></tr>
-<tr><td>Default@2x.png</td><td>640x960</td></tr>
-<tr><td>app_icon_1024x1024.png</td><td>1024x1024</td></tr>
-<tr><td>app_icon_114x114.png</td><td>114x114</td></tr>
-<tr><td>app_icon_144x144.png</td><td>144x144</td></tr>
-<tr><td>app_icon_512x512.png</td><td>512x512</td></tr>
-<tr><td>app_icon_57x57.png</td><td>57x57</td></tr>
-<tr><td>app_icon_72x72.png</td><td>72x72</td></tr>
-<tr><td>app_small_icon_100x100.png</td><td>100x100</td></tr>
-<tr><td>app_small_icon_29x29.png</td><td>29x29</td></tr>
-<tr><td>app_small_icon_58x58.png</td><td>58x58</td></tr>
-<tr><td>itc_screen_1136x600.png</td><td>1136x600</td></tr>
-<tr><td>itc_screen_1136x640.png</td><td>1136x640</td></tr>
-<tr><td>itc_screen_1536x2048.png</td><td>1536x2048</td></tr>
-<tr><td>itc_screen_2048x1536.png</td><td>2048x1536</td></tr>
-<tr><td>itc_screen_640x1096.png</td><td>640x1096</td></tr>
-<tr><td>itc_screen_640x1136.png</td><td>640x1136</td></tr>
-<tr><td>itc_screen_640x960.png</td><td>640x960</td></tr>
-</table>
+## iOS 7 Assets
 
+The following assets are generated to support the specification listed in:
+
+<https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html#//apple_ref/doc/uid/TP40006556-CH27-SW1>
+
+<https://developer.apple.com/library/ios/documentation/LanguagesUtilities/Conceptual/iTunesConnect_Guide/8_AddingNewApps/AddingNewApps.html#//apple_ref/doc/uid/TP40011225-CH13-SW42>
+
+| Image Name               | Resolution |
+| :--                      |        :-- |
+| app_icon_1024x1024.png   |  1024x1024 |
+| app_icon_120x120.png     |    120x120 |
+| app_icon_152x152.png     |    152x152 |
+| app_launch_1024x768.png  |   1024x768 |
+| app_launch_1536x2048.png |  1536x2048 |
+| app_launch_2048x1536.png |  2048x1536 |
+| app_launch_640x1136.png  |   640x1136 |
+| app_launch_640x960.png   |    640x960 |
+| app_launch_768x1024.png  |   768x1024 |
+| app_settings_58x58.png   |      58x58 |
+| app_spotlight_40x40.png  |      40x40 |
+| app_spotlight_80x80.png  |      80x80 |
+| itc_screen_1024x748.png  |   1024x748 |
+| itc_screen_1136x600.png  |   1136x600 |
+| itc_screen_1536x2008.png |  1536x2008 |
+| itc_screen_2048x1496.png |  2048x1496 |
+| itc_screen_640x1096.png  |   640x1096 |
+| itc_screen_640x920.png   |    640x920 |
+| itc_screen_768x1004.png  |   768x1004 |
+| itc_screen_960x600.png   |    960x600 |
+
+
+## iOS 6 Assets
+
+| Image Name                    | Resolution |
+| :--                           |        :-- |
+| Default-568h@2x.png           |   640x1136 |
+| Default-Landscape@2x~iPad.png |  2048x1496 |
+| Default-Landscape~iPad.png    |   1024x748 |
+| Default-Portrait@2x~iPad.png  |  1536x2008 |
+| Default-Portrait~iPad.png     |   768x1004 |
+| Default.png                   |    320x480 |
+| Default@2x.png                |    640x960 |
+| app_icon_1024x1024.png        |  1024x1024 |
+| app_icon_114x114.png          |    114x114 |
+| app_icon_144x144.png          |    144x144 |
+| app_icon_512x512.png          |    512x512 |
+| app_icon_57x57.png            |      57x57 |
+| app_icon_72x72.png            |      72x72 |
+| app_small_icon_100x100.png    |    100x100 |
+| app_small_icon_29x29.png      |      29x29 |
+| app_small_icon_58x58.png      |      58x58 |
+| itc_screen_1136x600.png       |   1136x600 |
+| itc_screen_1136x640.png       |   1136x640 |
+| itc_screen_1536x2048.png      |  1536x2048 |
+| itc_screen_2048x1536.png      |  2048x1536 |
+| itc_screen_640x1096.png       |   640x1096 |
+| itc_screen_640x1136.png       |   640x1136 |
+| itc_screen_640x960.png        |    640x960 |
 
 ## License
 
