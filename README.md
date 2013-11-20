@@ -1,4 +1,4 @@
-# Scratch Asset
+# Scratch Asset 2.0
 
 A utility to generate scratch image assets for an iOS project and its corresponding iTunes Connect app submission. 
 
