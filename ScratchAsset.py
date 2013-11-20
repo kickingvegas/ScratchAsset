@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright 2012 Yummy Melon Software LLC
+# Copyright 2012,2013 Yummy Melon Software LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -63,43 +63,16 @@ class Asset:
 
 class Application:
     def __init__(self):
-        self.version = 1.0
+        self.version = 2.0
         self.options = {}
         self.options['title'] = 'ScratchAsset'
         self.options['color'] = 'black'
         self.options['backgroundcolor'] = '#7CFC00'
         self.options['execute'] = False
+        self.options['osversion'] = '7'
 
         self.assetSpecifications = {}
-        self.assetSpecifications['icon114'] = Asset('icon', 114, 114)
-        self.assetSpecifications['icon57'] = Asset('icon', 57, 57)
-        self.assetSpecifications['icon144'] = Asset('icon', 144, 144)
-        self.assetSpecifications['icon72'] = Asset('icon', 72, 72)
         
-        self.assetSpecifications['iPhone5LaunchPortrait'] = Asset('launch', 640, 1136, 'Default-568h@2x.png')
-        self.assetSpecifications['iPhone4LaunchPortrait'] = Asset('launch', 640, 960, 'Default@2x.png')
-        self.assetSpecifications['iPhoneLaunchPortrait'] = Asset('launch', 320, 480, 'Default.png', retina=False)
-        self.assetSpecifications['iPad3LaunchPortrait'] = Asset('launch', 1536, 2008, 'Default-Portrait@2x~iPad.png')
-        self.assetSpecifications['iPad3LaunchLandscape'] = Asset('launch', 2048, 1496, 'Default-Landscape@2x~iPad.png')
-        self.assetSpecifications['iPadLaunchPortrait'] = Asset('launch', 768, 1004, 'Default-Portrait~iPad.png', retina=False)
-        self.assetSpecifications['iPadLaunchLandscape'] = Asset('launch', 1024, 748, 'Default-Landscape~iPad.png', retina=False)
-                
-        self.assetSpecifications['icon58'] = Asset('small_icon', 58, 58)
-        self.assetSpecifications['icon29'] = Asset('small_icon', 29, 29)
-        self.assetSpecifications['icon100'] = Asset('small_icon', 100, 100)
-
-        self.assetSpecifications['icon1024'] = Asset('icon', 1024, 1024)
-        self.assetSpecifications['icon512'] = Asset('icon', 512, 512)
-        
-        self.assetSpecifications['itc_iPhone4'] = Asset('itc', 640, 960)
-        self.assetSpecifications['itc_iPadLandscape'] = Asset('itc', 2048, 1536)
-        self.assetSpecifications['itc_iPadPortrait'] = Asset('itc', 1536, 2048)
-
-        self.assetSpecifications['itc_iPhone5Portrait'] = Asset('itc', 640, 1096)
-        self.assetSpecifications['itc_iPod5Portrait'] = Asset('itc', 640, 1136)
-        
-        self.assetSpecifications['itc_iPhone5Landscape'] = Asset('itc', 1136, 600)
-        self.assetSpecifications['itc_iPod5Landscape'] = Asset('itc', 1136, 640)
 
 
     def list(self):
@@ -143,6 +116,9 @@ class Application:
             elif o in ('-x', '--execute'):
                 self.options['execute'] = True
 
+            elif o in ('-o', '--osversion'):
+                self.options['osversion'] = i
+
             elif o in ('-l', '--l'):
                 self.list()
                 sys.exit(0)
@@ -155,7 +131,67 @@ class Application:
 
         self.createAssets()
 
+
+    def populateSpecifications(self):
+        if self.options['osversion'] == '7':
+            ## iOS7
+            self.assetSpecifications['icon120'] = Asset('icon', 120, 120)
+            self.assetSpecifications['icon152'] = Asset('icon', 152, 152)
+            self.assetSpecifications['icon1024'] = Asset('icon', 1024, 1024)
+            self.assetSpecifications['iPhone5LaunchPortrait'] = Asset('launch', 640, 1136)
+            self.assetSpecifications['iPhone4LaunchPortrait'] = Asset('launch', 640, 960)
+            self.assetSpecifications['iPadRetinaLaunchPortrait'] = Asset('launch', 1536, 2048)
+            self.assetSpecifications['iPadRetinaLaunchLandscape'] = Asset('launch', 2048, 1536)
+            self.assetSpecifications['iPadLaunchPortrait'] = Asset('launch', 768, 1024)
+            self.assetSpecifications['iPadLaunchLandcape'] = Asset('launch', 1024, 768)
+            self.assetSpecifications['spotlight80'] = Asset('spotlight', 80, 80)
+            self.assetSpecifications['spotlight40'] = Asset('spotlight', 40, 40)
+            self.assetSpecifications['settings'] = Asset('settings', 58, 58)
+            self.assetSpecifications['itc_iPhone4Portrait'] = Asset('itc', 640, 920)
+            self.assetSpecifications['itc_iPhone4Landscape'] = Asset('itc', 960, 600)
+            self.assetSpecifications['itc_iPhone5Portrait'] = Asset('itc', 640, 1096)
+            self.assetSpecifications['itc_iPhone5Landscape'] = Asset('itc', 1136, 600)
+            self.assetSpecifications['itc_iPadLandscape'] = Asset('itc', 1024, 748)
+            self.assetSpecifications['itc_iPadRetinaLandscape'] = Asset('itc', 2048, 1496)
+            self.assetSpecifications['itc_iPadPortrait'] = Asset('itc', 768, 1004)
+            self.assetSpecifications['itc_iPadRetinaPortrait'] = Asset('itc', 1536, 2008)
+
+        else:        
+            ## <= iOS 6 
+            self.assetSpecifications['icon114'] = Asset('icon', 114, 114)
+            self.assetSpecifications['icon57'] = Asset('icon', 57, 57)
+            self.assetSpecifications['icon144'] = Asset('icon', 144, 144)
+            self.assetSpecifications['icon72'] = Asset('icon', 72, 72)
+            
+            self.assetSpecifications['iPhone5LaunchPortrait'] = Asset('launch', 640, 1136, 'Default-568h@2x.png')
+            self.assetSpecifications['iPhone4LaunchPortrait'] = Asset('launch', 640, 960, 'Default@2x.png')
+            self.assetSpecifications['iPhoneLaunchPortrait'] = Asset('launch', 320, 480, 'Default.png', retina=False)
+            self.assetSpecifications['iPad3LaunchPortrait'] = Asset('launch', 1536, 2008, 'Default-Portrait@2x~iPad.png')
+            self.assetSpecifications['iPad3LaunchLandscape'] = Asset('launch', 2048, 1496, 'Default-Landscape@2x~iPad.png')
+            self.assetSpecifications['iPadLaunchPortrait'] = Asset('launch', 768, 1004, 'Default-Portrait~iPad.png', retina=False)
+            self.assetSpecifications['iPadLaunchLandscape'] = Asset('launch', 1024, 748, 'Default-Landscape~iPad.png', retina=False)
+
+            self.assetSpecifications['icon58'] = Asset('small_icon', 58, 58)
+            self.assetSpecifications['icon29'] = Asset('small_icon', 29, 29)
+            self.assetSpecifications['icon100'] = Asset('small_icon', 100, 100)
+
+            self.assetSpecifications['icon1024'] = Asset('icon', 1024, 1024)
+            self.assetSpecifications['icon512'] = Asset('icon', 512, 512)
+            
+            self.assetSpecifications['itc_iPhone4'] = Asset('itc', 640, 960)
+            self.assetSpecifications['itc_iPadLandscape'] = Asset('itc', 2048, 1536)
+            self.assetSpecifications['itc_iPadPortrait'] = Asset('itc', 1536, 2048)
+            
+            self.assetSpecifications['itc_iPhone5Portrait'] = Asset('itc', 640, 1096)
+            self.assetSpecifications['itc_iPod5Portrait'] = Asset('itc', 640, 1136)
+
+            self.assetSpecifications['itc_iPhone5Landscape'] = Asset('itc', 1136, 600)
+            self.assetSpecifications['itc_iPod5Landscape'] = Asset('itc', 1136, 640)
+            
+
     def createAssets(self):
+
+        self.populateSpecifications()
 
         if self.options['execute']:
             if not os.path.exists('scratch'):
@@ -224,13 +260,14 @@ class Application:
 if __name__ == '__main__':
 
     try:
-        optlist, args = getopt.getopt(sys.argv[1:], 'hvt:c:b:xl',
+        optlist, args = getopt.getopt(sys.argv[1:], 'hvt:c:b:xlo:',
                                       ('help'
                                        , 'title='
                                        , 'color='
                                        , 'backgroundcolor='
                                        , 'execute'
                                        , 'list'
+                                       , 'osversion='
                                        , 'version'))
                                        
     except getopt.error, msg:
